@@ -36,7 +36,7 @@ function sendMessage(url, message, reply, res){
 
 app.post("/", (req, res)=>{
     const { message } = req.body;
-    reply = "Welcome to Covid bot v2.0\n Commands:\n1) \\aware\n 2) \\simptons";
+    reply = "Welcome to Covid bot v2.0\n Commands:\n1) /aware\n 2) /simptons";
     if(message.text.toLowerCase().indexOf("/start") !== -1)
         sendMessage(tel,message,reply,res);
     else if(message.text.toLowerCase().indexOf("/aware") !== -1)
