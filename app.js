@@ -22,6 +22,17 @@ app.get("/", (req, res)=>{
     res.send("Welcome to Covid bot v2.0\n Commands:1) \\aware\n 2)\\simptons");
 });
 
+function sendMessage(url, message, reply, res){
+    axios.post(url, {
+        'chat_id': message.chat.id,
+        'text': reply
+        }).then(response => {
+            console.log("Message posted");
+            res.end("ok");
+        }).catch(error =>{
+        console.log(error);
+    });
+ }
 
 app.post("/", (req, res)=>{
     const { message } = req.body;
