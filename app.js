@@ -24,6 +24,8 @@ const test =
 const awareness =
 	"Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.\nMost people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.";
 const symptoms = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
+const about =
+	"This bot is developed by a team of 3 aspiring developers: Shambu Valasang, Siddhant Dua & Calvin Lobo. The pandemic has been upsetting for everyone and a lot of people have lost their lives to it. Being Engineers and problem solvers at heart, We put our heart and soul into this bot hoping to reach out to those in need of help. It's a small token of gratitude from our end to give back to our people and community. We believe that everyone should help as many people as they can in whatever way possible to help people hold up against these challenging times. We have done our bit and we really look forward to watching you do the same in your own ways :) . Take care. Lots of love from the team.";
 
 let setu = (pincode) => {
 	return `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formatted}`;
@@ -66,7 +68,7 @@ app.use(
 
 app.get("/", (req, res) => {
 	res.send(
-		"Welcome to Covid bot v2.0\n Commands:1) \\aware\n 2)\\symptoms \n 3) \\vaccineinfo"
+		"Welcome to Covid bot v2.0\n Commands:1) \\aware\n 2)\\symptoms \n 3) \\vaccineinfo \n 4)\\aboutus"
 	);
 });
 
@@ -88,15 +90,15 @@ function sendMessage(url, message, reply, res) {
 app.post("/", (req, res) => {
 	const { message } = req.body;
 	reply =
-		"Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /symptoms\n3) /vaccineinfo<pincode> \n4/about";
+		"Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /symptoms\n3) /vaccineinfo<pincode> \n4)/aboutus";
 	if (message.text.toLowerCase().indexOf("/start") !== -1)
 		sendMessage(tel, message, reply, res);
 	else if (message.text.toLowerCase().indexOf("/aware") !== -1)
 		sendMessage(tel, message, awareness, res);
 	else if (message.text.toLowerCase().indexOf("/symptoms") !== -1)
 		sendMessage(tel, message, symptoms, res);
-	else if (message.text.toLowerCase().indexOf("/about") !== -1)
-		sendMessage(tel, message, symptoms, res);
+	else if (message.text.toLowerCase().indexOf("/aboutus") !== -1)
+		sendMessage(tel, message, about, res);
 	else if (message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1) {
 		pincode = re.exec(message.text.toLowerCase())[0];
 		console.log(pincode);
