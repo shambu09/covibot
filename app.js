@@ -1,6 +1,7 @@
 const express = require("express");
 require('dotenv').config();
 const axios = require("axios");
+const https = require('https')
 
 const app = express();
 const token = process.env.TOKEN;
@@ -25,19 +26,42 @@ const test = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findB
 const awareness = "Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.\nMost people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment."
 const symptoms  = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
 
-getInfo = (url,tel,message,res)=>{
-    axios.get(url,  {
+getInfo = (pin,tel,message,rese)=>{
+    // axios.get(url,  {
+    //     headers: {
+    //       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
+    //     }})
+    //     .then((response)=>{
+    //         temp = response;
+            
+    //     })
+    //     .catch((err)=>{
+    //         console.log(err);
+    //     });
+    const options = {
+        hostname: 'cdn-api.co-vin.in',
+        path: `/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${formatted}`,
+        method: 'GET',
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
-        }})
-        .then((response)=>{
-            temp = response.data.sessions[0];
-            s = `${temp.name}\n address: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
-            sendMessage(tel,message,s,res)
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
+      }
+      }
+      
+      const req = https.request(options, res => {
+        console.log(`statusCode: ${res.statusCode}`)
+      
+        res.on('data', d => {
+          temp = JSOM.parse(d.toString()).sessions[0];
+          s = `${temp.name}\n address: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
+          sendMessage(tel,message,s,rese)
         })
-        .catch((err)=>{
-            console.log(err);
-        });
+      })
+      
+      req.on('error', error => {
+        console.error(error)
+      })
+      
+      req.end()
 };
 
 app.use(express.json());
@@ -91,3 +115,4 @@ app.post("/", (req, res)=>{
 });
 
 app.listen(port||3000, () => console.log(`Telegram bot is listening on port ${port||3000}!`));
+
