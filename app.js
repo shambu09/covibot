@@ -28,10 +28,10 @@ const symptoms  = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
 getInfo = (url,tel,message,res)=>{
     axios.get(url,  {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1'
+          'User-Agent': 'Mozilla/5.0 (CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1'
         }})
         .then((response)=>{
-            temp = response.data;
+            temp = response.data.sessions[0];
             s = `${temp.name}\n address: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
             sendMessage(tel,message,s,res)
         })
@@ -39,6 +39,7 @@ getInfo = (url,tel,message,res)=>{
             console.log(err);
         });
 };
+
 
 app.use(express.json());
 app.use(
