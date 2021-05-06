@@ -53,6 +53,7 @@ getInfo = (url, tel, message, res) => {
 		})
 		.catch((err) => {
 			console.log(err);
+			sendMessage(tel, message, "Invalid Pincode.", res);
 		});
 };
 
@@ -87,18 +88,21 @@ function sendMessage(url, message, reply, res) {
 app.post("/", (req, res) => {
 	const { message } = req.body;
 	reply =
-		"Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /symptoms\n3) /vaccineinfo<pincode>";
+		"Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /symptoms\n3) /vaccineinfo<pincode> \n4/about";
 	if (message.text.toLowerCase().indexOf("/start") !== -1)
 		sendMessage(tel, message, reply, res);
 	else if (message.text.toLowerCase().indexOf("/aware") !== -1)
 		sendMessage(tel, message, awareness, res);
 	else if (message.text.toLowerCase().indexOf("/symptoms") !== -1)
 		sendMessage(tel, message, symptoms, res);
+	else if (message.text.toLowerCase().indexOf("/about") !== -1)
+		sendMessage(tel, message, symptoms, res);
 	else if (message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1) {
 		pincode = re.exec(message.text.toLowerCase())[0];
 		console.log(pincode);
-		if (pincode == null)
-			sendMessage(tel, message, "No sessions as of now.", res);
+		if (pincode == null) sendMessage(tel, message, "Invalid Pincode.", res);
+		else if (pincode.length != 6)
+			sendMessage(tel, message, "Invalid Pincode.", res);
 		else {
 			setuUrl = setu(pincode);
 			console.log(setuUrl);
