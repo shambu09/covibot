@@ -98,11 +98,9 @@ app.post("/", (req, res)=>{
         sendMessage(tel,message,symptoms,res);
     else if(message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1)
         {
-            setuUrl = setu(587102);
-            console.log(setuUrl);
             try
             {
-                getInfo(setuUrl, tel, message, res);
+                getInfo(587102, tel, message, res);
             }
             catch(err)
             {
