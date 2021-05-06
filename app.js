@@ -5,6 +5,7 @@ const dfff = require("dialogflow-fulfillment");
 const datetime = require("node-datetime");
 
 let pincode;
+const port = process.env.PORT;
 let responseData_vaccine;
 let data;
 let dataSlot_vaccine;
@@ -75,4 +76,4 @@ app.post("/", express.json(), (req, res) => {
 	getInfo(setuUrl, res);
 });
 
-app.listen(3000, () => console.log("Server is live at port 3000"));
+app.listen(port||3000, () => console.log("Server is live at port " + port||3000));
