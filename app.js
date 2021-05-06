@@ -30,7 +30,7 @@ app.use(
 );
 
 app.get("/", (req, res)=>{
-    res.send("Welcome to Covid bot v2.0\n Commands:1) \\aware\n 2)\\simptons");
+    res.send("Welcome to Covid bot v2.0\n Commands:1) \\aware\n 2)\\symptoms");
 });
 
 function sendMessage(url, message, reply, res){
