@@ -9,6 +9,8 @@ const tel = `https://api.telegram.org/bot${token}/sendMessage`;
 
 let re = new RegExp('[0-9]+');
 let setuUrl;
+let temp;
+let s;
 
 var datetime = require('node-datetime');
 var dt = datetime.create();
@@ -20,11 +22,8 @@ let setu = (pincode)=>{
 };
 
 const test = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=587102&date=$05-05-2021";
-
-
 const awareness = "Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.\nMost people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment."
 const symptoms  = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
-let temp;
 
 getInfo = (url,tel,message,res)=>{
     axios.get(url,  {
@@ -73,6 +72,12 @@ app.post("/", (req, res)=>{
         sendMessage(tel,message,awareness,res);
     else if(message.text.toLowerCase().indexOf("/symptoms") !== -1)
         sendMessage(tel,message,symptoms,res);
+    else if(message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1)
+        {
+            setuUrl = setu(re.exec(message.text.toLowerCase()));
+            console.log(setuUrl);
+            getInfo(setuUrl, tel, message, res)
+        }
     else
         sendMessage(tel,message,"Invalid Command",res);
     
