@@ -1,37 +1,23 @@
 const express = require("express");
-require("dotenv").config();
+const app = express();
 const axios = require("axios");
+const dfff = require("dialogflow-fulfillment");
 const datetime = require("node-datetime");
 
-const app = express();
-const token = process.env.TOKEN;
-const port = process.env.PORT;
-const tel = `https://api.telegram.org/bot${token}/sendMessage`;
-
-let setuUrl;
 let pincode;
-let dataSlot_vaccine;
-let replyInfo_vaccine;
 let responseData_vaccine;
+let data;
+let dataSlot_vaccine;
 
-let re = new RegExp("[0-9]+");
 let dt = datetime.create();
 dt.offsetInDays(-1);
 let formatted = dt.format("d-m-Y");
-
-const test =
-	"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=587102&date=$05-05-2021";
-const awareness =
-	"Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.\nMost people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.";
-const symptoms = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
-const about =
-	"This bot is developed by a team of 3 aspiring developers: Shambu Valasang, Siddhant Dua & Calvin Lobo. The pandemic has been upsetting for everyone and a lot of people have lost their lives to it. Being Engineers and problem solvers at heart, We put our heart and soul into this bot hoping to reach out to those in need of help. It's a small token of gratitude from our end to give back to our people and community. We believe that everyone should help as many people as they can in whatever way possible to help people hold up against these challenging times. We have done our bit and we really look forward to watching you do the same in your own ways :) . Take care. Lots of love from the team.";
 
 let setu = (pincode) => {
 	return `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formatted}`;
 };
 
-getInfo = (url, tel, message, res) => {
+getInfo = (url, res) => {
 	axios
 		.get(url, {
 			headers: {
@@ -44,79 +30,49 @@ getInfo = (url, tel, message, res) => {
 		.then((response) => {
 			responseData_vaccine = response.data.sessions;
 			if (responseData_vaccine.length == 0) {
-				sendMessage(tel, message, "No sessions as of now.", res);
+				data = "No sessions as of now.";
 			} else {
+				data = "";
 				for (i = 0; i < responseData_vaccine.length; i++) {
 					dataSlot_vaccine = responseData_vaccine[i];
-					replyInfo_vaccine = `${dataSlot_vaccine.name}\n address: ${dataSlot_vaccine.address},${dataSlot_vaccine.district_name} ${dataSlot_vaccine.state_name}\nVaccine:${dataSlot_vaccine.vaccine}, fee: Rs.${dataSlot_vaccine.fee}\nfrom: ${dataSlot_vaccine.from}, to: ${dataSlot_vaccine.to}`;
-					sendMessage(tel, message, replyInfo_vaccine, res);
+					data += `${i + 1})  ${dataSlot_vaccine.name}\naddress: ${
+						dataSlot_vaccine.address
+					},${dataSlot_vaccine.district_name} ${
+						dataSlot_vaccine.state_name
+					}\nVaccine:${dataSlot_vaccine.vaccine}, fee: Rs.${
+						dataSlot_vaccine.fee
+					}\nfrom: ${dataSlot_vaccine.from}, to: ${
+						dataSlot_vaccine.to
+					}\n\n`;
 				}
 			}
+			res.json({
+				fulfillmentText: data,
+			});
 		})
 		.catch((err) => {
 			console.log(err);
-			sendMessage(tel, message, "Invalid Pincode.", res);
+			data = "Invalid Pincode.";
+			res.json({
+				fulfillmentText: data,
+			});
 		});
 };
 
-app.use(express.json());
-app.use(
-	express.urlencoded({
-		extended: true,
-	})
-);
-
 app.get("/", (req, res) => {
-	res.send(
-		"Welcome to Covid bot v2.0\n Commands:1) \\aware\n 2)\\symptoms \n 3) \\vaccineinfo \n 4)\\aboutus"
-	);
+	res.send("live covibot");
 });
 
-function sendMessage(url, message, reply, res) {
-	axios
-		.post(url, {
-			chat_id: message.chat.id,
-			text: reply,
-		})
-		.then((response) => {
-			console.log("Message posted");
-			res.end("ok");
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
-
-app.post("/", (req, res) => {
-	const { message } = req.body;
-	reply =
-		"Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /symptoms\n3) /vaccineinfo<pincode> \n4)/aboutus";
-	if (message.text.toLowerCase().indexOf("/start") !== -1)
-		sendMessage(tel, message, reply, res);
-	else if (message.text.toLowerCase().indexOf("/aware") !== -1)
-		sendMessage(tel, message, awareness, res);
-	else if (message.text.toLowerCase().indexOf("/symptoms") !== -1)
-		sendMessage(tel, message, symptoms, res);
-	else if (message.text.toLowerCase().indexOf("/aboutus") !== -1)
-		sendMessage(tel, message, about, res);
-	else if (message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1) {
-		pincode = re.exec(message.text.toLowerCase())[0];
-		console.log(pincode);
-		if (pincode == null) sendMessage(tel, message, "Invalid Pincode.", res);
-		else if (pincode.length != 6)
-			sendMessage(tel, message, "Invalid Pincode.", res);
-		else {
-			setuUrl = setu(pincode);
-			console.log(setuUrl);
-			try {
-				getInfo(setuUrl, tel, message, res);
-			} catch (err) {
-				console.log(err);
-			}
-		}
-	} else sendMessage(tel, message, "Invalid Command", res);
+app.post("/", express.json(), (req, res) => {
+	const agent = new dfff.WebhookClient({
+		request: req,
+		response: res,
+	});
+	pincode = req.body.queryResult.parameters.number;
+	console.log(pincode);
+	setuUrl = setu(pincode);
+	console.log(setuUrl);
+	getInfo(setuUrl, res);
 });
 
-app.listen(port || 3000, () =>
-	console.log(`Telegram bot is listening on port ${port || 3000}!`)
-);
+app.listen(3000, () => console.log("Server is live at port 3000"));
