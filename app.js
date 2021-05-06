@@ -43,6 +43,7 @@ getInfo = (pin,tel,message,rese)=>{
         path: `/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${formatted}`,
         method: 'GET',
         headers: {
+                    "Accept-Language": "en_US",
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
       }
       }
@@ -52,7 +53,7 @@ getInfo = (pin,tel,message,rese)=>{
       
         res.on('data', d => {
           temp = JSON.parse(d.toString()).sessions[0];
-          s = `${temp.name}\n address: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
+          s = `${temp.name}\naddress: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
           sendMessage(tel,message,s,rese)
         })
       })
@@ -64,6 +65,36 @@ getInfo = (pin,tel,message,rese)=>{
       req.end()
 };
 
+// getInfoTest = (pin)=>{
+
+//     const options = {
+//         hostname: 'cdn-api.co-vin.in',
+//         path: `/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${formatted}`,
+//         method: 'GET',
+//         headers: {
+//                     "Accept-Language": "hi_IN",
+//                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
+//       }
+//       }
+      
+//       const req = https.request(options, res => {
+//         console.log(`statusCode: ${res.statusCode}`)
+      
+//         res.on('data', d => {
+//           temp = JSON.parse(d.toString()).sessions[0];
+//           s = `${temp.name}\naddress: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
+//           console.log(s);
+//         })
+//       })
+      
+//       req.on('error', error => {
+//         console.error(error)
+//       })
+      
+//       req.end()
+// };
+
+// getInfoTest(587102);
 app.use(express.json());
 app.use(
   express.urlencoded({
