@@ -5,7 +5,7 @@ const datetime = require("node-datetime");
 
 const app = express();
 const token = process.env.TOKEN;
-const port = process.env.PORT;
+const port = 3000;
 const tel = `https://api.telegram.org/bot${token}/sendMessage`;
 
 let setuUrl;
