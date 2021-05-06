@@ -28,7 +28,7 @@ const symptoms  = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
 getInfo = (url,tel,message,res)=>{
     axios.get(url,  {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
         }})
         .then((response)=>{
             temp = response.data.sessions[0];
@@ -39,7 +39,6 @@ getInfo = (url,tel,message,res)=>{
             console.log(err);
         });
 };
-
 
 app.use(express.json());
 app.use(
