@@ -42,10 +42,8 @@ getInfo = (pin,tel,message,rese)=>{
         hostname: 'cdn-api.co-vin.in',
         path: `/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${formatted}`,
         method: 'GET',
-        headers: {
-                    "Accept-Language": "en_US",
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
-      }
+        headers: {'Content-Type': 'application/json',
+        'Accept-Language' : 'hi_IN' , 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
       }
       
       const req = https.request(options, res => {
@@ -71,10 +69,8 @@ getInfo = (pin,tel,message,rese)=>{
 //         hostname: 'cdn-api.co-vin.in',
 //         path: `/api/v2/appointment/sessions/public/findByPin?pincode=${pin}&date=${formatted}`,
 //         method: 'GET',
-//         headers: {
-//                     "Accept-Language": "hi_IN",
-//                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
-//       }
+//         headers: {'Content-Type': 'application/json',
+//         'Accept-Language' : 'hi_IN' , 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 //       }
       
 //       const req = https.request(options, res => {
