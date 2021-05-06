@@ -7,7 +7,8 @@ const token = process.env.TOKEN;
 const port = process.env.PORT
 const tel = `https://api.telegram.org/bot${token}/sendMessage`;
 
-const re = '[0-9]+';
+let re = new RegExp('[0-9]+');
+var myArray = re.exec('');
 
 var datetime = require('node-datetime');
 var dt = datetime.create();
@@ -15,7 +16,7 @@ dt.offsetInDays(-1);
 var formatted = dt.format('d-m-Y');
 
 let setu = (pincode)=>{
-   return `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formatted}`
+   return `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formatted}`;
 };
 
 
@@ -47,7 +48,7 @@ function sendMessage(url, message, reply, res){
 
 app.post("/", (req, res)=>{
     const { message } = req.body;
-    reply = "Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /simptons";
+    reply = "Welcome to Covid bot v2.0\nCommands:\n1) /aware\n2) /symptoms";
     if(message.text.toLowerCase().indexOf("/start") !== -1)
         sendMessage(tel,message,reply,res);
     else if(message.text.toLowerCase().indexOf("/aware") !== -1)
