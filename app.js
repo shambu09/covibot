@@ -72,12 +72,12 @@ app.post("/", (req, res)=>{
         sendMessage(tel,message,awareness,res);
     else if(message.text.toLowerCase().indexOf("/symptoms") !== -1)
         sendMessage(tel,message,symptoms,res);
-    else if(message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1)
-        {
-            setuUrl = setu(re.exec(message.text.toLowerCase()));
-            console.log(setuUrl);
-            getInfo(setuUrl, tel, message, res)
-        }
+    // else if(message.text.toLowerCase().indexOf("/vaccinesinfo") !== -1)
+    //     {
+    //         setuUrl = setu(re.exec(message.text.toLowerCase()));
+    //         console.log(setuUrl);
+    //         getInfo(setuUrl, tel, message, res)
+    //     }
     else
         sendMessage(tel,message,"Invalid Command",res);
     
