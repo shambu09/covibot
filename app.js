@@ -73,11 +73,6 @@ app.post("/", (req, res)=>{
         sendMessage(tel,message,awareness,res);
     else if(message.text.toLowerCase().indexOf("/symptoms") !== -1)
         sendMessage(tel,message,symptoms,res);
-    else if(message.text.toLowerCase().indexOf("/vaccineinfo") !== -1)
-        {
-            setuUrl = setu(re.exec(message.text.toLowerCase()));
-            getInfo(setuUrl,tel,message,re);
-        }
     else
         sendMessage(tel,message,"Invalid Command",res);
     
