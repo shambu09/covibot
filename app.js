@@ -7,9 +7,20 @@ const token = process.env.TOKEN;
 const port = process.env.PORT
 const tel = `https://api.telegram.org/bot${token}/sendMessage`;
 
+const re = '[0-9]+';
 
-const awareness = "FUCK COVID.";
-const symptoms  = "aches and pains, sore throat, diarrhoea, mental retardness";
+var datetime = require('node-datetime');
+var dt = datetime.create();
+dt.offsetInDays(-1);
+var formatted = dt.format('d-m-Y');
+
+let setu = (pincode)=>{
+   return `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${formatted}`
+};
+
+
+const awareness = "Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.\nMost people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment."
+const symptoms  = "Aches and pains, sore throat, diarrhoea, coughing, etc.";
 
 app.use(express.json());
 app.use(
@@ -41,10 +52,11 @@ app.post("/", (req, res)=>{
         sendMessage(tel,message,reply,res);
     else if(message.text.toLowerCase().indexOf("/aware") !== -1)
         sendMessage(tel,message,awareness,res);
-    else if(message.text.toLowerCase().indexOf("/simptons") !== -1)
+    else if(message.text.toLowerCase().indexOf("/symptoms") !== -1)
         sendMessage(tel,message,symptoms,res);
     else
         sendMessage(tel,message,"Invalid Command",res);
+    
 });
 
-app.listen(port, () => console.log(`Telegram bot is listening on port ${port}!`));
+app.listen(port||3000, () => console.log(`Telegram bot is listening on port ${port||3000}!`));
