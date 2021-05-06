@@ -51,7 +51,7 @@ getInfo = (pin,tel,message,rese)=>{
         console.log(`statusCode: ${res.statusCode}`)
       
         res.on('data', d => {
-          temp = JSOM.parse(d.toString()).sessions[0];
+          temp = JSON.parse(d.toString()).sessions[0];
           s = `${temp.name}\n address: ${temp.address},${temp.district_name} ${temp.state_name}\nVaccine:${temp.vaccine}, fee: Rs.${temp.fee}\nfrom: ${temp.from}, to: ${temp.to}`;
           sendMessage(tel,message,s,rese)
         })
