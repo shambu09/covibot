@@ -11,7 +11,6 @@ let data;
 let dataSlot_vaccine;
 
 let dt = datetime.create();
-dt.offsetInDays(-1);
 let formatted = dt.format("d-m-Y");
 
 let setu = (pincode) => {
