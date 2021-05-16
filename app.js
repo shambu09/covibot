@@ -32,7 +32,7 @@ getInfo = (url, res) => {
 			if (responseData_vaccine.length == 0) {
 				data = "No sessions as of now.";
 			} else {
-				data = "" + formatted + ":\n\n";
+				data = "";
 				for (i = 0; i < responseData_vaccine.length; i++) {
 					dataSlot_vaccine = responseData_vaccine[i];
 					data += `${i + 1})  ${dataSlot_vaccine.name}\naddress: ${
