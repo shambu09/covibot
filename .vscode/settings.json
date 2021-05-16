@@ -1,8 +1,0 @@
-{
-    "appService.zipIgnorePattern": [
-        "node_modules{,/**}",
-        ".vscode{,/**}"
-    ],
-    "appService.deploySubpath": ".",
-    "appService.defaultWebAppToDeploy": "/subscriptions/9e93d292-d223-4050-a80b-f4f1a7e75b73/resourceGroups/covibot/providers/Microsoft.Web/sites/covibot09"
-}
